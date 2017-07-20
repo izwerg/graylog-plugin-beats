@@ -153,7 +153,8 @@ public class BeatsCodec extends AbstractCodec {
 
         return gelfMessage;
 */
-        final Message gelfMessage = createMessage(null, event);
+        final String message = String.valueOf(event.get("message"));
+        final Message gelfMessage = createMessage(message, event);
         gelfMessage.addField("facility", "filebeat");
         gelfMessage.addField("file", event.get("source"));
         final Map<String, Object> flattened = flatten(event, "filebeat", MAP_KEY_SEPARATOR);
