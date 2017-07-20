@@ -157,7 +157,8 @@ public class BeatsCodec extends AbstractCodec {
         final Message gelfMessage = createMessage(message, event);
         gelfMessage.addField("facility", "filebeat");
         gelfMessage.addField("file", event.get("source"));
-        final Map<String, Object> flattened = flatten(event, "filebeat", MAP_KEY_SEPARATOR);
+//        final Map<String, Object> flattened = flatten(event, "filebeat", MAP_KEY_SEPARATOR);
+        final Map<String, Object> flattened = flatten(event, "", MAP_KEY_SEPARATOR);
 
         // Fix field names containing dots, like "cpu.name"
         final Map<String, Object> withoutDots = MapUtils.replaceKeyCharacter(flattened, '.', MAP_KEY_SEPARATOR.charAt(0));
