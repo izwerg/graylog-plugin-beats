@@ -139,9 +139,10 @@ public class BeatsCodec extends AbstractCodec {
     }
 
     /**
-     * @see <a href="https://www.elastic.co/guide/en/beats/filebeat/1.2/exported-fields.html">Filebeat Exported Fields</a>
+     * @see <a href="https://www.elastic.co/guide/en/beats/filebeat/master/exported-fields.html">Filebeat Exported Fields</a>
      */
     private Message parseFilebeat(Map<String, Object> event) {
+/*
         final String message = String.valueOf(event.get("message"));
         final Message gelfMessage = createMessage(message, event);
         gelfMessage.addField("facility", "filebeat");
@@ -150,6 +151,15 @@ public class BeatsCodec extends AbstractCodec {
         gelfMessage.addField("count", event.get("count"));
         gelfMessage.addField("offset", event.get("offset"));
 
+        return gelfMessage;
+*/
+        final Message gelfMessage = createMessage("-", event);
+        gelfMessage.addField("facility", "filebeat");
+        final Map<String, Object> flattened = flatten(event, "filebeat", MAP_KEY_SEPARATOR);
+
+        // Fix field names containing dots, like "cpu.name"
+        final Map<String, Object> withoutDots = MapUtils.replaceKeyCharacter(flattened, '.', MAP_KEY_SEPARATOR.charAt(0));
+        gelfMessage.addFields(withoutDots);
         return gelfMessage;
     }
 
