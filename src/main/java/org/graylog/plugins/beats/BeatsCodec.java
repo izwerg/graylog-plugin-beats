@@ -153,8 +153,9 @@ public class BeatsCodec extends AbstractCodec {
 
         return gelfMessage;
 */
-        final Message gelfMessage = createMessage("-", event);
+        final Message gelfMessage = createMessage(null, event);
         gelfMessage.addField("facility", "filebeat");
+        gelfMessage.addField("file", event.get("source"));
         final Map<String, Object> flattened = flatten(event, "filebeat", MAP_KEY_SEPARATOR);
 
         // Fix field names containing dots, like "cpu.name"
